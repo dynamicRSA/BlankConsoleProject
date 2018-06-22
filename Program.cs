@@ -1,31 +1,42 @@
-﻿using System;
+﻿/*
+ *  BLANK CONSOLE PROJECT 
+ *  This is a console application template that allows you to drop in your logic into a Console App template that comes with
+ * - Logging
+ * - Case statement and highlighting
+ * - Configurable with config reader
+ * - Tasks can run asynchronusly
+ *
+ */
+
+
+
+
+using System;
 using System.Configuration;
 using System.Net;
 using System.Reflection;
 using System.Threading.Tasks;
 using log4net;
 
-namespace ImportCert
+namespace BlankConsoleProject
 {
     internal class Program
     {
         public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-        public static bool m_IgnoreFirstRow = true;
-        public static bool configurationLoaded;
-        public static bool GLOBAL_INIT_OK;
+        public static bool IgnoreFirstRow = true;
+        public static bool ConfigurationLoaded;
+        public static bool GlobalInit;
 
-
+        //Load config 
         public static void LoadConfiguration()
         {
             try
             {
-                if (!configurationLoaded)
+                if (!ConfigurationLoaded)
                 {
-                    //load configuration
-
                     log.Info("-----------------------CONSOLE APP-------------------------");
                     log.Info(" <!-- Logger information for Log4Net -->");
-                    log.Info(" Log Level        : " + getLogLevel(log));
+                    log.Info(" Log Level        : " + GetLogLevel(log));
                     log.Info(" Log Name         : " + log.Logger.Name);
                     log.Info("-----------------------------------------------------------------------");
                 }
@@ -36,6 +47,7 @@ namespace ImportCert
             }
         }
 
+        //Read values that you may require to be configure in the app.config
         private static string GetConfigValue(string key)
         {
             try
@@ -54,7 +66,8 @@ namespace ImportCert
             }
         }
 
-        private static string getLogLevel(ILog theLogger)
+        //Logging levels
+        private static string GetLogLevel(ILog theLogger)
         {
             if (theLogger.IsDebugEnabled)
                 return "Debug";
@@ -71,9 +84,9 @@ namespace ImportCert
 
         private static void Main(string[] args)
         {
-            configurationLoaded = false;
+            ConfigurationLoaded = false;
             LoadConfiguration();
-            GLOBAL_INIT_OK = configurationLoaded;
+            GlobalInit = ConfigurationLoaded;
             // The Main function calls an async method named RunAsync 
             // and then blocks until RunAsyncc completes.
 
@@ -86,8 +99,6 @@ namespace ImportCert
         private static async Task RunAsync()
         {
             var myName = Assembly.GetEntryAssembly().GetName();
-
-
             if (myName != null)
             {
                 var iAction = 1;
